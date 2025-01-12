@@ -37,25 +37,25 @@ class PusherBroadcast implements ShouldBroadcast
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    // public function broadcastOn(): array
-    // {
-    //     // return [
-    //     //     new PrivateChannel('channel-name'),
-    //     // ];
-    //     return [new PrivateChannel('chat.' . $this->senderId . '_' . $this->receiverId)];
-    //     // return [new PrivateChannel('chat.123')];
-    //     // return ['chat.123'];
-    // }
+    public function broadcastOn(): array
+    {
+        // return [
+        //     new PrivateChannel('channel-name'),
+        // ];
+        // return [new PrivateChannel('chat.' . $this->senderId . '_' . $this->receiverId)];
+        // return [new PrivateChannel('chat.123')];
+        return ['chat.123'];
+    }
 
     // public function broadcastOn(): array
     // {
     //     return [new PrivateChannel('chat.' . $this->senderId . '.' . $this->receiverId)];
     // }
 
-    public function broadcastOn(): array
-    {
-        return [new Channel('chat.' . $this->receiverId)];
-    }
+    // public function broadcastOn(): array
+    // {
+    //     return [new Channel('chat.' . $this->receiverId)];
+    // }
 
 
     public function broadcastAs(): string

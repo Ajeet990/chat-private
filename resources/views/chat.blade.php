@@ -24,34 +24,34 @@
     </div>
 
     <script>
-        const pusher = new Pusher('{{ config('broadcasting.connections.pusher.key') }}', {
-            cluster: 'ap2',
-            encrypted: true,
-            authEndpoint: '/broadcasting/auth', // Correct authentication endpoint
-            auth: {
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}', // Ensure CSRF token is included
-                },
-            },
-        });
-        // const pusher = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {cluster:'ap2'})
+        // const pusher = new Pusher('{{ config('broadcasting.connections.pusher.key') }}', {
+        //     cluster: 'ap2',
+        //     encrypted: true,
+        //     authEndpoint: '/broadcasting/auth', // Correct authentication endpoint
+        //     auth: {
+        //         headers: {
+        //             'X-CSRF-TOKEN': '{{ csrf_token() }}', // Ensure CSRF token is included
+        //         },
+        //     },
+        // });
+        const pusher = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {cluster:'ap2'})
         // console.log("pusher", pusher)
-        // const channel = pusher.subscribe('chat.123')
+        const channel = pusher.subscribe('chat.123')
 
         const userId = {{ auth()->id() }};
         const receiverId = $('#receiver_id').val();
         // const channel = pusher.subscribe(`private-chat.${userId}.${receiverId}`);
     
-        // channel.bind('chat', function (data) {
-        //     $.post("/receive", {
-        //         _token : '{{csrf_token()}}',
-        //         message : data.message
-        //     })
-        //     .done(function (res) {
-        //         $(".messages > .message").last().after(res);
-        //         $(document).scrollTop($(document).height());
-        //     })
-        // })
+        channel.bind('chat', function (data) {
+            $.post("/receive", {
+                _token : '{{csrf_token()}}',
+                message : data.message
+            })
+            .done(function (res) {
+                $(".messages > .message").last().after(res);
+                $(document).scrollTop($(document).height());
+            })
+        })
     
         // channel.bind('chat', function (data) {
         //     // Check if the message is for the current user
@@ -73,16 +73,16 @@
         //     }
         // });
 
-        const channel = pusher.subscribe('chat.' + {{ $receiver_id }});
-        channel.bind('chat', function(data) {
-            $.post("/receive", {
-                _token: '{{ csrf_token() }}',
-                message: data.message
-            }).done(function(res) {
-                $(".messages").append(res);
-                $(document).scrollTop($(document).height());
-            });
-        });
+        // const channel = pusher.subscribe('chat.' + {{ $receiver_id }});
+        // channel.bind('chat', function(data) {
+        //     $.post("/receive", {
+        //         _token: '{{ csrf_token() }}',
+        //         message: data.message
+        //     }).done(function(res) {
+        //         $(".messages").append(res);
+        //         $(document).scrollTop($(document).height());
+        //     });
+        // });
 
         $('form').submit(function (event) {
             event.preventDefault();
